@@ -1144,17 +1144,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "953f07c43838f8e6f9758cab68bf5bed85465e7587ebe0b823f1bcd81978ad3a"
 
 [[package]]
-name = "mansour"
-version = "0.1.0"
-dependencies = [
- "dotenvy",
- "env_logger",
- "log",
- "rustio-admin",
- "tokio",
-]
-
-[[package]]
 name = "md-5"
 version = "0.10.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2138,6 +2127,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.117",
+]
+
+[[package]]
+name = "systemkraft"
+version = "0.1.0"
+dependencies = [
+ "dotenvy",
+ "env_logger",
+ "log",
+ "rustio-admin",
+ "tokio",
 ]
 
 [[package]]

@@ -118,6 +118,50 @@ code {
 /* ---------- typography / sections ---------- */
 header.hero { padding: 88px 0 40px; }
 header.hero.bordered { border-bottom: 1px solid var(--rio-line); }
+
+/* ---------- hero: "Chaos → Control" (home) ---------- */
+.hero--viz .hero-copy { max-width: 960px; margin: 0 auto; text-align: center; }
+.hero--viz .hero-title { font-size: clamp(2.3rem, 6.4vw, 4.4rem); line-height: 1.04; letter-spacing: -0.03em; font-weight: 800; color: var(--rio-text-hi); margin: 0 0 22px; max-width: none; text-wrap: balance; }
+.hero-accent { color: var(--rio-rust); }
+.hero--viz .lead { margin: 0 auto 30px; max-width: 60ch; font-size: 19px; }
+.hero--viz .cta { justify-content: center; }
+
+.hero-viz { width: 100%; max-width: 1120px; margin: 60px auto 0; }
+.hero-viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+/* the central operational engine */
+.sk-engine { transform-box: fill-box; transform-origin: center; filter: drop-shadow(0 0 16px var(--rio-rust-ring)); animation: sk-pulse 3.6s ease-in-out infinite; }
+.sk-halo { transform-box: fill-box; transform-origin: center; animation: sk-halo 3.6s ease-in-out infinite; }
+.sk-facet { fill: #fff; opacity: 0.14; }
+.sk-edge { fill: none; stroke: var(--rio-rust-active); stroke-width: 1.2; opacity: 0.55; }
+
+/* chaos · inputs */
+.sk-node rect { fill: var(--rio-surface); stroke: var(--rio-line); stroke-width: 1; }
+.sk-node text { fill: var(--rio-text-faint); font-family: var(--font-mono); font-size: 13px; font-weight: 600; }
+.sk-node { opacity: 0.58; transform-box: fill-box; transform-origin: center; animation: sk-jitter 4.8s ease-in-out infinite; }
+.sk-chaos-line { fill: none; stroke: var(--rio-text-faint); stroke-width: 1.4; stroke-dasharray: 5 7; opacity: 0.4; animation: sk-flow-in 1.8s linear infinite; }
+
+/* control · output */
+.sk-ctrl-line { fill: none; stroke: var(--rio-rust); stroke-width: 3; stroke-linecap: round; opacity: 0.85; stroke-dasharray: 2 11; filter: drop-shadow(0 0 5px var(--rio-rust-ring)); animation: sk-flow-out 1.3s linear infinite; }
+.sk-panel { fill: color-mix(in srgb, var(--rio-surface) 92%, transparent); stroke: var(--rio-line-strong); stroke-width: 1.5; }
+.sk-row { stroke: var(--rio-line-strong); stroke-width: 5; stroke-linecap: round; opacity: 0.7; }
+.sk-row.accent { stroke: var(--rio-rust); opacity: 0.85; }
+.sk-winbtn { fill: var(--rio-line-strong); }
+.sk-chartbox { fill: var(--rio-bg); stroke: var(--rio-line); stroke-width: 1; }
+.sk-chartline { fill: none; stroke: var(--rio-rust); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.sk-dot { fill: var(--rio-success); animation: sk-blink 2.4s ease-in-out infinite; }
+
+@keyframes sk-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+@keyframes sk-halo { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.12); } }
+@keyframes sk-jitter { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(2px, -2px); } 50% { transform: translate(-1px, 2px); } 75% { transform: translate(-2px, -1px); } }
+@keyframes sk-flow-in { to { stroke-dashoffset: -24; } }
+@keyframes sk-flow-out { to { stroke-dashoffset: -26; } }
+@keyframes sk-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-engine, .sk-halo, .sk-node, .sk-chaos-line, .sk-ctrl-line, .sk-dot { animation: none; }
+}
+@media (max-width: 720px) { .hero-viz { margin-top: 40px; } }
 h1 { font-size: clamp(2.05rem, 3.9vw, 2.95rem); line-height: 1.1; margin: 0 0 20px; font-weight: 800; letter-spacing: -0.022em; color: var(--rio-text-hi); max-width: 30ch; text-wrap: balance; }
 h2 { font-size: clamp(1.45rem, 2.4vw, 1.95rem); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 6px; color: var(--rio-text-hi); line-height: 1.14; text-wrap: balance; }
 .lead { color: var(--rio-text-mute); margin: 0 0 28px; font-size: 18px; line-height: 1.62; max-width: 72ch; }

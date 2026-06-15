@@ -3,7 +3,7 @@ name = "mansour"
 version = "0.1.0"
 edition = "2021"
 publish = false
-description = "Rust systems, security & admin platforms — services for Swedish companies"
+description = "SystemKraft — Enterprise Data Operations & Business Systems Engineering for Swedish enterprises"
 
 [dependencies]
 # Pinned to the published crate so the repo builds standalone after a clean

@@ -6,10 +6,10 @@ A 5-minute orientation for opening this project for the first time. The
 ## 1. Run it
 
 ```sh
-createdb mansour_dev               # once
+createdb systemkraft_dev               # once
 cp .env.example .env               # local Postgres defaults
 rustio-admin migrate apply         # applies ./migrations
-psql "$DATABASE_URL" -f seeds/mansour_demo.sql   # optional SystemKraft demo data
+psql "$DATABASE_URL" -f seeds/systemkraft_demo.sql   # optional SystemKraft demo data
 cargo run                          # http://127.0.0.1:8000
 ```
 
@@ -36,7 +36,7 @@ rustio-admin user create --email you@systemkraft.dev --role administrator
 | `src/main.rs` | Boots the server, registers the six models, serves the public pages + `/assets/*`, and renders the assessment form (CSRF) and dashboard (live stats) |
 | `src/*.rs` | One model per file (`#[derive(RustioAdmin)]` + `impl ModelAdmin`) |
 | `migrations/*.sql` | Schema, applied in order; append-only |
-| `seeds/mansour_demo.sql` | The SystemKraft dataset: disciplines, services, clients, engagements, case studies, inquiries |
+| `seeds/systemkraft_demo.sql` | The SystemKraft dataset: disciplines, services, clients, engagements, case studies, inquiries |
 | `templates/*.html` | The four public pages (home, investment, assessment, dashboard_preview) |
 | `static/css/main.css`, `static/js/main.js` | Shared design system + theme toggle, served at `/assets/*` |
 | `SERVICES.md` | The offering as standalone marketing copy |

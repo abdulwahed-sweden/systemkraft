@@ -69,7 +69,7 @@ Prerequisites: **Rust** (1.88+), **PostgreSQL**, and the `rustio-admin` CLI
 cp .env.example .env            # defaults target a local Postgres
 
 # 2. Create the database (the one step the CLI cannot do for you).
-createdb mansour_dev
+createdb systemkraft_dev
 
 # 3. Apply migrations and create your first operator.
 rustio-admin migrate apply
@@ -78,7 +78,7 @@ rustio-admin user create --email you@systemkraft.dev --role administrator
 
 # 4. (Optional) Load the SystemKraft demo dataset so the panel and
 #    dashboard are populated.
-psql "$DATABASE_URL" -f seeds/mansour_demo.sql
+psql "$DATABASE_URL" -f seeds/systemkraft_demo.sql
 
 # 5. Boot.
 cargo run                       # http://127.0.0.1:8000
@@ -114,7 +114,7 @@ Same shape for `clients`, `engagements`, `case_studies`, `service_categories`,
   > Note: the public pages and assets are embedded at compile time via
   > `include_str!`, so changes to `templates/*.html` or `static/*` take effect
   > after a `cargo run` (rebuild). Admin templates reload without a rebuild.
-- **Content** — edit rows in `/admin`, or the `seeds/mansour_demo.sql` dataset.
+- **Content** — edit rows in `/admin`, or the `seeds/systemkraft_demo.sql` dataset.
 - **A new model** — `rustio-admin startapp <name> --field ...`, then register
   it in `src/main.rs` under the `// rustio: models` marker.
 

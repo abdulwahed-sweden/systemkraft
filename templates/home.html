@@ -3,1379 +3,172 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      SystemKraft · Enterprise Data Operations &amp; Business Systems
-      Engineering
-    </title>
+    <title>SystemKraft · Enterprise Data Operations &amp; Business Systems Engineering</title>
     <meta
       name="description"
-      content="SystemKraft engineers scattered data, legacy ERPs and fragile spreadsheets into one secure, high-performance operational core — a single source of truth your enterprise owns. Built on Rust and PostgreSQL."
+      content="SystemKraft transforms fragmented digital infrastructure into a single, centralized operating system — ending the struggle with disconnected SaaS tools and giving decision-makers one source of truth."
     />
     <meta name="color-scheme" content="dark light" />
-    <meta
-      name="theme-color"
-      content="#2B313D"
-      media="(prefers-color-scheme: dark)"
-    />
-    <meta
-      name="theme-color"
-      content="#F3F6FD"
-      media="(prefers-color-scheme: light)"
-    />
+    <meta name="theme-color" content="#2B313D" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F3F6FD" media="(prefers-color-scheme: light)" />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:title"
-      content="SystemKraft · Enterprise Data Operations"
-    />
+    <meta property="og:title" content="SystemKraft · Enterprise Data Operations" />
     <meta
       property="og:description"
-      content="From scattered data to controlled operations. One secure source of truth your enterprise owns — built on Rust and PostgreSQL."
+      content="One centralized operating system for your enterprise. End SaaS sprawl; give decision-makers a single source of truth."
     />
-    <meta name="twitter:card" content="summary_large_image" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-
-    <style>
-      /* ============================================================
-       SystemKraft (RustIO) design tokens
-       ============================================================ */
-      :root {
-        color-scheme: light;
-        --rio-bg: #f3f6fd;
-        --rio-surface: #ffffff;
-        --rio-raised: #d9dee9;
-        --rio-sunken: #e7ecf4;
-        --rio-line: #dbe0eb;
-        --rio-line-strong: #c2cad9;
-        --rio-dot: rgba(40, 60, 110, 0.05);
-        --rio-text-hi: #111722;
-        --rio-text: #3b4453;
-        --rio-text-mute: #677083;
-        --rio-text-faint: #99a1b2;
-        --rio-rust: #2347ce;
-        --rio-rust-hover: #1b38ac;
-        --rio-rust-active: #152c8c;
-        --rio-rust-tint: rgba(35, 71, 206, 0.07);
-        --rio-rust-ring: rgba(35, 71, 206, 0.4);
-        --rio-rust-solid: #2347ce;
-        --rio-rust-solid-hover: #1b38ac;
-        --rio-on-solid: #ffffff;
-        --rio-gold: #b5790f;
-        --rio-gold-tint: rgba(181, 121, 15, 0.12);
-        --rio-success: #3f7d54;
-        --rio-success-tint: rgba(63, 125, 84, 0.1);
-      }
-      [data-theme='dark'] {
-        color-scheme: dark;
-        --rio-bg: #2b313d;
-        --rio-surface: #343b49;
-        --rio-raised: #404857;
-        --rio-sunken: #232834;
-        --rio-line: #454e60;
-        --rio-line-strong: #5a6479;
-        --rio-dot: rgba(255, 255, 255, 0.03);
-        --rio-text-hi: #d9dee9;
-        --rio-text: #c4cbd8;
-        --rio-text-mute: #a8b1c0;
-        --rio-text-faint: #828c9e;
-        --rio-rust: #6e8cff;
-        --rio-rust-hover: #88a1ff;
-        --rio-rust-active: #a2b6ff;
-        --rio-rust-tint: rgba(110, 140, 255, 0.15);
-        --rio-rust-ring: rgba(110, 140, 255, 0.52);
-        --rio-rust-solid: #3a5be0;
-        --rio-rust-solid-hover: #4a6bf0;
-        --rio-on-solid: #ffffff;
-        --rio-gold: #e0ae5a;
-        --rio-gold-tint: rgba(224, 174, 90, 0.16);
-        --rio-success: #6fb98a;
-        --rio-success-tint: rgba(111, 185, 138, 0.15);
-      }
-
-      :root {
-        --ms-rust-word: #c2410c;
-        --ms-rust-word-tint: rgba(194, 65, 12, 0.1);
-      }
-      [data-theme='dark'] {
-        --ms-rust-word: #ee9c6b;
-        --ms-rust-word-tint: rgba(238, 156, 107, 0.14);
-      }
-      .rust {
-        color: var(--ms-rust-word);
-        font-weight: 600;
-      }
-      h1 .rust {
-        font-weight: inherit;
-      }
-
-      :root {
-        --font-sans:
-          'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
-          sans-serif;
-        --font-mono:
-          'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-        --radius: 12px;
-        --radius-sm: 9px;
-        --radius-md: 10px;
-        --shadow-sm: 0 1px 2px rgba(17, 23, 34, 0.06);
-        --shadow-lg: 0 12px 28px -14px rgba(17, 23, 34, 0.3);
-        --maxw: 1080px;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      body {
-        overflow-x: hidden;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
-      :focus-visible {
-        outline: 2px solid var(--rio-rust);
-        outline-offset: 2px;
-        border-radius: 4px;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
-        }
-      }
-      body {
-        font-family: var(--font-sans);
-        color: var(--rio-text);
-        line-height: 1.62;
-        font-size: 17px;
-        background-color: var(--rio-bg);
-        background-image: radial-gradient(var(--rio-dot) 1px, transparent 1px);
-        background-size: 24px 24px;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
-        font-variant-numeric: tabular-nums lining-nums;
-      }
-      .wrap {
-        max-width: var(--maxw);
-        margin: 0 auto;
-        padding: 0 28px;
-      }
-      a {
-        color: var(--rio-rust);
-        text-decoration: none;
-      }
-      code {
-        font-family: var(--font-mono);
-        font-size: 0.88em;
-        color: var(--rio-text-hi);
-        background: var(--rio-sunken);
-        border: 1px solid var(--rio-line);
-        padding: 0.08em 0.42em;
-        border-radius: 6px;
-      }
-      .mark {
-        color: var(--rio-text-hi);
-        display: inline-flex;
-        flex: none;
-      }
-      .mark svg {
-        display: block;
-      }
-      .mark .core {
-        fill: var(--rio-rust);
-      }
-
-      /* ---------- top bar ---------- */
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: color-mix(in srgb, var(--rio-bg) 84%, transparent);
-        backdrop-filter: saturate(1.4) blur(12px);
-        -webkit-backdrop-filter: saturate(1.4) blur(12px);
-        border-bottom: 1px solid var(--rio-line);
-      }
-      .brandbar {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        height: 62px;
-      }
-      .wordmark {
-        font-weight: 800;
-        font-size: 20px;
-        letter-spacing: -0.01em;
-        color: var(--rio-text-hi);
-      }
-      .env-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 5px 12px;
-        font-family: var(--font-mono);
-        font-size: 13px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--rio-gold);
-        background: var(--rio-gold-tint);
-        border: 1px solid color-mix(in srgb, var(--rio-gold) 38%, transparent);
-        border-radius: 999px;
-      }
-      .env-badge::before {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--rio-gold);
-      }
-      .topbar .spacer {
-        margin-left: auto;
-      }
-      .iconbtn {
-        width: 38px;
-        height: 38px;
-        display: inline-grid;
-        place-items: center;
-        cursor: pointer;
-        background: transparent;
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius-sm);
-        color: var(--rio-text-mute);
-        transition:
-          background 0.14s ease,
-          color 0.14s ease,
-          border-color 0.14s ease;
-      }
-      .iconbtn:hover {
-        background: var(--rio-raised);
-        color: var(--rio-text-hi);
-      }
-      .iconbtn svg {
-        width: 18px;
-        height: 18px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 1.75;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      /* ---------- hero ---------- */
-      header.hero {
-        padding: 72px 0 8px;
-      }
-      h1 {
-        font-size: clamp(2.05rem, 3.9vw, 2.9rem);
-        line-height: 1.1;
-        margin: 0 0 20px;
-        font-weight: 800;
-        letter-spacing: -0.022em;
-        color: var(--rio-text-hi);
-        text-wrap: balance;
-        max-width: 22ch;
-      }
-      .lead {
-        color: var(--rio-text-mute);
-        margin: 0 0 28px;
-        font-size: 18px;
-        line-height: 1.6;
-        max-width: 62ch;
-      }
-      .lead--sm {
-        font-size: 16.5px;
-      }
-      .cta {
-        display: flex;
-        gap: 9px;
-        flex-wrap: wrap;
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.5rem 0.95rem;
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius-sm);
-        color: var(--rio-text-hi);
-        font-family: var(--font-sans);
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 1;
-        letter-spacing: -0.005em;
-        background: var(--rio-surface);
-        cursor: pointer;
-        transition:
-          border-color 0.14s ease,
-          background 0.14s ease,
-          color 0.14s ease;
-      }
-      .btn:hover {
-        background: var(--rio-raised);
-        border-color: var(--rio-line-strong);
-      }
-      .btn--primary {
-        background: var(--rio-rust-solid);
-        color: var(--rio-on-solid);
-        border-color: var(--rio-rust-solid);
-      }
-      .btn--primary:hover {
-        background: var(--rio-rust-solid-hover);
-        border-color: var(--rio-rust-solid-hover);
-        color: #fff;
-      }
-      .btn--lg {
-        padding: 0.58rem 1.08rem;
-        font-size: 14.5px;
-      }
-
-      /* ---------- sections ---------- */
-      section {
-        padding: 66px 0 0;
-      }
-      .eyebrow {
-        font-family: var(--font-mono);
-        font-size: 13px;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--rio-text-faint);
-        margin: 0 0 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .eyebrow::before {
-        content: '';
-        width: 18px;
-        height: 1px;
-        background: currentColor;
-        opacity: 0.55;
-        flex: none;
-      }
-      .eyebrow--accent {
-        color: var(--rio-rust);
-      }
-      h2 {
-        font-size: clamp(1.45rem, 2.4vw, 1.95rem);
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        margin: 0 0 6px;
-        color: var(--rio-text-hi);
-        line-height: 1.14;
-        text-wrap: balance;
-      }
-      .section-lead {
-        color: var(--rio-text-mute);
-        margin: 8px 0 0;
-        max-width: 58ch;
-        font-size: 16px;
-      }
-
-      /* services */
-      .svc-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
-        margin-top: 28px;
-      }
-      .svc {
-        padding: 26px;
-        background: var(--rio-surface);
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-sm);
-        transition:
-          border-color 0.14s ease,
-          box-shadow 0.14s ease;
-        display: flex;
-        flex-direction: column;
-      }
-      .svc:hover {
-        border-color: color-mix(in srgb, var(--rio-rust) 50%, var(--rio-line));
-        box-shadow: var(--shadow-lg);
-      }
-      .svc__icon {
-        width: 40px;
-        height: 40px;
-        display: grid;
-        place-items: center;
-        color: var(--rio-rust);
-        background: var(--rio-rust-tint);
-        border: 1px solid color-mix(in srgb, var(--rio-rust) 22%, transparent);
-        border-radius: var(--radius-sm);
-        margin-bottom: 16px;
-        transition:
-          background 0.16s ease,
-          transform 0.16s ease;
-      }
-      .svc:hover .svc__icon {
-        background: var(--rio-rust-tint);
-        transform: translateY(-1px);
-      }
-      .svc__icon svg {
-        width: 19px;
-        height: 19px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 1.75;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-      .svc h3 {
-        font-size: 19px;
-        font-weight: 800;
-        letter-spacing: -0.01em;
-        margin: 0 0 8px;
-        color: var(--rio-text-hi);
-      }
-      .svc p {
-        margin: 0 0 12px;
-        color: var(--rio-text-mute);
-        font-size: 15px;
-        line-height: 1.55;
-      }
-      .svc .problem {
-        font-size: 14px;
-        color: var(--rio-text);
-        margin-top: auto;
-      }
-      .svc .problem b {
-        color: var(--rio-rust);
-        font-weight: 600;
-      }
-      .svc .proof {
-        display: block;
-        margin-top: 18px;
-        padding-top: 14px;
-        border-top: 1px solid var(--rio-line);
-        font-size: 13.5px;
-        color: var(--rio-text-faint);
-        font-family: var(--font-mono);
-        letter-spacing: 0.01em;
-      }
-
-      /* ---------- comparison / versus tables ---------- */
-      .compare-wrap {
-        margin-top: 36px;
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius);
-        overflow: hidden;
-        background: var(--rio-surface);
-        box-shadow: var(--shadow-sm);
-      }
-      .compare-header {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        background: var(--rio-sunken);
-        border-bottom: 1px solid var(--rio-line);
-      }
-      .compare-header div {
-        padding: 18px 26px;
-        font-family: var(--font-mono);
-        font-size: 14px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-      }
-      .compare-header .col-bad {
-        color: var(--rio-text-mute);
-      }
-      .compare-header .col-good {
-        color: var(--rio-rust);
-        background: var(--rio-rust-tint);
-        border-inline-start: 1px solid var(--rio-line);
-      }
-
-      .compare-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        border-bottom: 1px solid var(--rio-line);
-      }
-      .compare-row:last-child {
-        border-bottom: 0;
-      }
-      .compare-cell {
-        padding: 26px;
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-        font-size: 15.5px;
-        line-height: 1.6;
-      }
-
-      .compare-cell svg {
-        flex: none;
-        width: 20px;
-        height: 20px;
-        margin-top: 3px;
-        stroke-width: 2.5;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        fill: none;
-      }
-      .cell-bad {
-        color: var(--rio-text-mute);
-        padding-right: 40px;
-      }
-      .cell-bad svg {
-        stroke: color-mix(in srgb, var(--rio-text-mute) 60%, transparent);
-      }
-      .cell-bad strong {
-        display: block;
-        font-size: 16.5px;
-        font-weight: 600;
-        color: var(--rio-text);
-        margin-bottom: 6px;
-        letter-spacing: -0.01em;
-      }
-
-      .cell-good {
-        color: var(--rio-text-hi);
-        border-inline-start: 1px solid var(--rio-line);
-        background: linear-gradient(
-          90deg,
-          var(--rio-rust-tint) 0%,
-          transparent 100%
-        );
-      }
-      .cell-good svg {
-        stroke: var(--rio-success);
-      }
-      .cell-good strong {
-        display: block;
-        font-size: 16.5px;
-        font-weight: 800;
-        color: var(--rio-rust);
-        margin-bottom: 6px;
-        letter-spacing: -0.01em;
-      }
-
-      /* ---------- ROI Case Study ---------- */
-      .roi-container {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 0;
-        background: var(--rio-surface);
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius);
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-        margin-top: 36px;
-      }
-      .roi-story {
-        padding: 32px;
-        border-inline-end: 1px solid var(--rio-line);
-      }
-      .roi-story h3 {
-        color: var(--rio-text-hi);
-        font-size: 19px;
-        margin: 0 0 16px;
-        letter-spacing: -0.01em;
-      }
-      .roi-list {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 24px 0;
-      }
-      .roi-list li {
-        position: relative;
-        padding-left: 20px;
-        margin-bottom: 12px;
-        font-size: 15px;
-        color: var(--rio-text-mute);
-        line-height: 1.6;
-      }
-      .roi-list li::before {
-        content: '→';
-        position: absolute;
-        left: 0;
-        color: var(--rio-rust);
-        font-weight: bold;
-      }
-      .roi-list li strong {
-        color: var(--rio-text-hi);
-      }
-      .roi-results {
-        padding: 32px;
-        background: var(--rio-sunken);
-      }
-      .roi-metrics-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-top: 16px;
-      }
-      .roi-metric {
-        background: var(--rio-surface);
-        padding: 16px;
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius-sm);
-      }
-      .roi-metric strong {
-        display: block;
-        font-size: 26px;
-        color: var(--rio-rust);
-        margin-bottom: 4px;
-        line-height: 1;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-      }
-      .roi-metric span {
-        font-size: 12.5px;
-        font-family: var(--font-mono);
-        color: var(--rio-text-faint);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        display: block;
-        line-height: 1.4;
-      }
-
-      /* doctrine / how I work */
-      .points {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 0;
-        margin-top: 28px;
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius);
-        overflow: hidden;
-        background: var(--rio-surface);
-      }
-      .point {
-        padding: 24px 22px;
-        border-inline-start: 1px solid var(--rio-line);
-      }
-      .point:first-child {
-        border-inline-start: 0;
-      }
-      .point .k {
-        font-family: var(--font-mono);
-        font-size: 12.5px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--rio-rust);
-      }
-      .point strong {
-        display: block;
-        font-size: 16px;
-        font-weight: 800;
-        color: var(--rio-text-hi);
-        margin: 10px 0 6px;
-        letter-spacing: -0.01em;
-      }
-      .point span {
-        font-size: 14px;
-        color: var(--rio-text-mute);
-        line-height: 1.55;
-      }
-
-      /* live overview */
-      .status-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px;
-        margin-top: 24px;
-      }
-      .status-card {
-        display: flex;
-        align-items: flex-start;
-        gap: 11px;
-        padding: 18px 20px;
-        background: var(--rio-surface);
-        border: 1px solid var(--rio-line);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-sm);
-        transition: border-color 0.16s ease;
-      }
-      .status-card:hover {
-        border-color: var(--rio-line-strong);
-      }
-      .status-card .dot {
-        flex: none;
-        margin-top: 7px;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--rio-success);
-        box-shadow: 0 0 0 3px var(--rio-success-tint);
-      }
-      .status-card strong {
-        display: block;
-        font-size: 15px;
-        font-weight: 700;
-        color: var(--rio-text-hi);
-      }
-      .status-card span {
-        font-family: var(--font-mono);
-        font-size: 13.5px;
-        color: var(--rio-text-mute);
-        line-height: 1.55;
-      }
-      .status-card span code {
-        background: var(--rio-sunken);
-      }
-
-      /* footer */
-      #contact {
-        padding-bottom: 18px;
-      }
-      footer {
-        margin-top: 88px;
-        padding: 28px 0 52px;
-        border-top: 1px solid var(--rio-line);
-        color: var(--rio-text-faint);
-        font-family: var(--font-mono);
-        font-size: 13.5px;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 14px 28px;
-        align-items: center;
-        line-height: 1.5;
-      }
-      footer a {
-        color: var(--rio-text-mute);
-        border-bottom: 1px solid transparent;
-        padding-bottom: 1px;
-        transition:
-          color 0.14s ease,
-          border-color 0.14s ease;
-      }
-      footer a:hover {
-        color: var(--rio-rust);
-        border-bottom-color: var(--rio-rust);
-      }
-
-      /* Responsive Adjustments */
-      @media (max-width: 960px) {
-        .roi-container {
-          grid-template-columns: 1fr;
-        }
-        .roi-story {
-          border-inline-end: 0;
-          border-bottom: 1px solid var(--rio-line);
-        }
-      }
-      @media (max-width: 860px) {
-        .svc-grid {
-          grid-template-columns: 1fr;
-        }
-        .points {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        .point:nth-child(odd) {
-          border-inline-start: 0;
-        }
-        .point:nth-child(-n + 2) {
-          border-bottom: 1px solid var(--rio-line);
-        }
-        .status-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-      @media (max-width: 768px) {
-        .compare-header {
-          display: none;
-        }
-        .compare-row {
-          grid-template-columns: 1fr;
-          border-bottom: 6px solid var(--rio-sunken);
-        }
-        .compare-row:last-child {
-          border-bottom: 0;
-        }
-        .cell-bad {
-          padding-right: 26px;
-          border-bottom: 1px dashed var(--rio-line);
-        }
-        .cell-good {
-          border-inline-start: 0;
-        }
-      }
-      @media (max-width: 600px) {
-        section {
-          padding-top: 48px;
-        }
-        header.hero {
-          padding-top: 48px;
-        }
-        h1 {
-          font-size: 1.95rem;
-        }
-        .lead {
-          font-size: 16.5px;
-        }
-        .cta .btn {
-          flex: 1 1 auto;
-          justify-content: center;
-        }
-        .svc {
-          padding: 22px;
-        }
-        .compare-cell {
-          padding: 20px;
-        }
-        .roi-story,
-        .roi-results {
-          padding: 24px;
-        }
-      }
-      @media (max-width: 520px) {
-        .wrap {
-          padding: 0 20px;
-        }
-        .points {
-          grid-template-columns: 1fr;
-        }
-        .point {
-          border-inline-start: 0;
-          border-bottom: 1px solid var(--rio-line);
-        }
-        .point:last-child {
-          border-bottom: 0;
-        }
-        .status-grid {
-          grid-template-columns: 1fr;
-        }
-        .roi-metrics-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="/assets/main.css" />
   </head>
   <body>
-    <!-- ─────────────────────────── TOP BAR ─────────────────────────── -->
-    <div class="topbar">
-      <div class="wrap brandbar">
-        <span class="mark" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
-            <circle
-              cx="16"
-              cy="16"
-              r="13"
-              stroke="currentColor"
-              stroke-width="2.5"
-            ></circle>
-            <circle class="core" cx="16" cy="16" r="5.4"></circle>
-          </svg>
-        </span>
-        <span class="wordmark">SystemKraft</span>
-        <span class="env-badge">Sweden</span>
-        <span class="spacer"></span>
-        <button
-          id="themeBtn"
-          class="iconbtn"
-          aria-label="Toggle theme"
-          type="button"
-        >
-          <svg id="sun" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path
-              d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
-            ></path>
-          </svg>
-          <svg id="moon" viewBox="0 0 24 24" style="display: none">
-            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- ─────────────────────────── HERO ─────────────────────────── -->
-    <header class="hero">
-      <div class="wrap">
-        <h1>
-          From scattered data to
-          <span class="rust">controlled operations.</span>
-        </h1>
-        <p class="lead">
-          We turn operational chaos into business systems. Hand us your
-          scattered data, legacy ERPs, and fragile spreadsheets, and we will
-          engineer them into a secure, single source of truth for your
-          enterprise.
-        </p>
-        <div class="cta">
-          <a class="btn btn--primary btn--lg" href="#comparison"
-            >Explore operations →</a
-          >
-          <a class="btn btn--lg" href="#contact">Start a conversation</a>
-          <a class="btn btn--lg" href="/admin">System Dashboard</a>
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="/" aria-label="SystemKraft home">
+          <span class="mark" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="2.5"></circle>
+              <circle class="core" cx="16" cy="16" r="5.4"></circle>
+            </svg>
+          </span>
+          <span class="wordmark">SystemKraft</span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a class="nav-link" href="/" aria-current="page">Overview</a>
+          <a class="nav-link" href="/investment">Investment</a>
+          <a class="nav-link" href="/assessment">Assessment</a>
+          <a class="nav-link" href="/dashboard-preview">Dashboard</a>
+        </nav>
+        <div class="topbar-actions">
+          <span class="env-badge">Sweden</span>
+          <button id="themeBtn" class="iconbtn" aria-label="Toggle light or dark theme" type="button">
+            <svg id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+            <svg id="moon" viewBox="0 0 24 24" style="display: none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+          </button>
         </div>
       </div>
     </header>
 
-    <!-- ─────────────────────────── SERVICES ─────────────────────────── -->
-    <section id="services">
-      <div class="wrap">
-        <p class="eyebrow">Enterprise Solutions</p>
-        <h2>Four ways we build control</h2>
-        <div class="svc-grid">
-          <div class="svc">
-            <span class="svc__icon"
-              ><svg viewBox="0 0 24 24">
-                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                <line x1="3" y1="9" x2="21" y2="9"></line>
-                <line x1="9" y1="21" x2="9" y2="9"></line></svg
-            ></span>
-            <h3>Enterprise Data Operations</h3>
-            <p>
-              We unify disparate data sources—from sprawling Excel sheets to
-              legacy APIs—into a single, high-performance operational core.
-            </p>
-            <p class="problem">
-              <b>Solves:</b> Fragmented data silos and the lack of a single
-              source of truth across the company.
-            </p>
-            <span class="proof">Data In. Operations Out.</span>
-          </div>
-
-          <div class="svc">
-            <span class="svc__icon"
-              ><svg viewBox="0 0 24 24">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                <path d="M9 12l2 2 4-4"></path></svg
-            ></span>
-            <h3>Business Systems Engineering</h3>
-            <p>
-              Replacing fragile manual workflows with robust, memory-safe
-              back-office systems designed for absolute operational reliability.
-            </p>
-            <p class="problem">
-              <b>Solves:</b> Employees copying and pasting data all day due to
-              disconnected tools.
-            </p>
-            <span class="proof">Powered by Rust &amp; PostgreSQL</span>
-          </div>
-
-          <div class="svc">
-            <span class="svc__icon"
-              ><svg viewBox="0 0 24 24">
-                <rect x="4" y="8" width="16" height="12" rx="2"></rect>
-                <path d="M9 8V6a3 3 0 0 1 6 0v2"></path>
-                <line x1="12" y1="13" x2="12" y2="16"></line></svg
-            ></span>
-            <h3>Unified Control Panels</h3>
-            <p>
-              Minimalist, high-contrast admin portals built for heavy daily use,
-              giving decision-makers instant, unified visibility.
-            </p>
-            <p class="problem">
-              <b>Solves:</b> Cluttered, slow, and confusing interfaces that
-              delay critical business decisions.
-            </p>
-            <span class="proof">Keyboard-first · Low-latency</span>
-          </div>
-
-          <div class="svc">
-            <span class="svc__icon"
-              ><svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="2" y1="12" x2="22" y2="12"></line>
-                <path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"></path></svg
-            ></span>
-            <h3>Audit &amp; Authority Architecture</h3>
-            <p>
-              Strict role-based access control (RBAC) and immutable audit trails
-              integrated at the foundation of your daily operations.
-            </p>
-            <p class="problem">
-              <b>Solves:</b> Unmanaged access, unauthorized changes, and the
-              inability to answer "who did what, and when?"
-            </p>
-            <span class="proof">Security-centric · Doctrine-driven</span>
+    <main>
+      <header class="hero">
+        <div class="wrap">
+          <h1>One operating system for the whole enterprise.</h1>
+          <p class="lead">
+            We transform fragmented digital infrastructure into a single, centralized
+            operating system. Our goal is to end your team's struggle with weak,
+            disconnected SaaS tools and give decision-makers a single source of truth.
+          </p>
+          <div class="cta">
+            <a class="btn btn--primary btn--lg" href="/assessment">Request an operational assessment →</a>
+            <a class="btn btn--lg" href="/investment">See the business case</a>
+            <a class="btn btn--lg" href="/dashboard-preview">View a live dashboard</a>
           </div>
         </div>
-      </div>
-    </section>
+      </header>
 
-    <!-- ─────────────────────────── THE PARADIGM SHIFT ─────────────────────────── -->
-    <section id="comparison">
-      <div class="wrap">
-        <p class="eyebrow eyebrow--accent">The Paradigm Shift</p>
-        <h2>The cost of chaos vs. The power of control</h2>
-        <p class="section-lead">
-          A direct look at what enterprise leaders tolerate today, versus the
-          operational standard we deliver.
-        </p>
+      <section id="services">
+        <div class="wrap">
+          <p class="eyebrow">Enterprise capabilities</p>
+          <h2>Four disciplines, one control surface</h2>
+          <div class="svc-grid">
+            <article class="svc">
+              <span class="svc__icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+              <h3>Enterprise Data Operations</h3>
+              <p>We consolidate disparate data sources — from sprawling spreadsheets to legacy ERP exports and partial APIs — into one high-performance operational core.</p>
+              <p class="problem"><b>Solves:</b> data silos and the absence of a single source of truth across departments.</p>
+              <span class="proof">Data in. Operations out.</span>
+            </article>
 
-        <div class="compare-wrap">
-          <div class="compare-header">
-            <div class="col-bad">The Status Quo</div>
-            <div class="col-good">The SystemKraft Standard</div>
-          </div>
+            <article class="svc">
+              <span class="svc__icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+              <h3>Business Systems Engineering</h3>
+              <p>We replace fragile manual workflows with robust, memory-safe back-office systems engineered for absolute operational reliability and velocity.</p>
+              <p class="problem"><b>Solves:</b> staff re-keying the same data into disconnected tools all day.</p>
+              <span class="proof">Powered by Rust &amp; PostgreSQL</span>
+            </article>
 
-          <div class="compare-row">
-            <div class="compare-cell cell-bad">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <div>
-                <strong>Fragmented Architecture</strong>
-                A fragile web of legacy ERPs, patched APIs, and manual Excel
-                exports. No unified context.
-              </div>
-            </div>
-            <div class="compare-cell cell-good">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <strong>One Source of Truth</strong>
-                A unified, high-performance operational core. Every department
-                looks at the exact same data.
-              </div>
-            </div>
-          </div>
+            <article class="svc">
+              <span class="svc__icon"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M9 8V6a3 3 0 0 1 6 0v2"></path><line x1="12" y1="13" x2="12" y2="16"></line></svg></span>
+              <h3>Unified Control Panels</h3>
+              <p>Minimalist, high-contrast admin portals built for heavy daily use, giving decision-makers instant, unified visibility into the entire operation.</p>
+              <p class="problem"><b>Solves:</b> cluttered, slow interfaces that delay critical business decisions.</p>
+              <span class="proof">Keyboard-first · Low-latency</span>
+            </article>
 
-          <div class="compare-row">
-            <div class="compare-cell cell-bad">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <div>
-                <strong>Sluggish Interfaces</strong>
-                Cluttered, confusing dashboards requiring endless clicks to find
-                basic information.
-              </div>
-            </div>
-            <div class="compare-cell cell-good">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <strong>Low-Latency Command</strong>
-                Lightning-fast, minimalist, keyboard-first interfaces designed
-                exclusively for heavy daily operations.
-              </div>
-            </div>
-          </div>
-
-          <div class="compare-row">
-            <div class="compare-cell cell-bad">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <div>
-                <strong>Unmanaged Authority</strong>
-                "Who changed this data?" is a mystery. Security and permissions
-                are bolted-on afterthoughts.
-              </div>
-            </div>
-            <div class="compare-cell cell-good">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <strong>Audit-by-Default</strong>
-                Immutable logs and strict Role-Based Access Control (RBAC)
-                engineered at the deepest foundation.
-              </div>
-            </div>
+            <article class="svc">
+              <span class="svc__icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"></path></svg></span>
+              <h3>Audit &amp; Authority Architecture</h3>
+              <p>Strict role-based access control (RBAC) and immutable audit trails engineered into the foundation of your daily operations — not bolted on afterward.</p>
+              <p class="problem"><b>Solves:</b> unmanaged access and the inability to answer "who did what, and when?"</p>
+              <span class="proof">Security-centric · Doctrine-driven</span>
+            </article>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ─────────────────────────── SAAS VS CUSTOM ─────────────────────────── -->
-    <section id="saas-vs-custom">
-      <div class="wrap">
-        <p class="eyebrow">The Business Model</p>
-        <h2>Renting Fragility vs. Owning the Engine</h2>
-        <p class="section-lead">
-          Why growing enterprises eventually abandon "No-Code" platforms and
-          off-the-shelf SaaS subscriptions.
-        </p>
+      <section id="paradigm">
+        <div class="wrap">
+          <p class="eyebrow eyebrow--accent">The paradigm shift</p>
+          <h2>The cost of chaos vs. the SystemKraft standard</h2>
+          <p class="section-lead">A direct look at what enterprise leaders tolerate today, against the operational standard we engineer.</p>
 
-        <div class="compare-wrap">
-          <div class="compare-header">
-            <div class="col-bad">Off-the-Shelf SaaS & No-Code</div>
-            <div class="col-good">SystemKraft Custom Engine</div>
-          </div>
+          <div class="compare-wrap">
+            <div class="compare-header">
+              <div class="col-bad">The cost of chaos</div>
+              <div class="col-good">The SystemKraft standard</div>
+            </div>
 
-          <div class="compare-row">
-            <div class="compare-cell cell-bad">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <div>
-                <strong>The Growth Tax</strong>
-                Per-seat pricing models. As your company grows and hires more
-                staff, your software bill unfairly multiplies.
+            <div class="compare-row">
+              <div class="compare-cell cell-bad">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <div><strong>Fragile SaaS sprawl</strong>A patchwork of subscriptions stitched together with brittle webhooks. When one link breaks, operations halt.</div>
+              </div>
+              <div class="compare-cell cell-good">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div><strong>A unified core</strong>One high-performance PostgreSQL core. Every department reads and writes the exact same data, in one place.</div>
               </div>
             </div>
-            <div class="compare-cell cell-good">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <strong>The Owned Asset</strong>
-                A single executable binary. Whether you add 10 employees or
-                1,000, your infrastructure costs remain flat.
-              </div>
-            </div>
-          </div>
 
-          <div class="compare-row">
-            <div class="compare-cell cell-bad">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <div>
-                <strong>Digital Glue</strong>
-                Relying on Zapier and fragile webhooks to connect disjointed
-                apps. When one link breaks, operations halt.
+            <div class="compare-row">
+              <div class="compare-cell cell-bad">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <div><strong>Manual data entry</strong>Staff copying and reconciling figures between tools — slow, costly, and quietly accumulating errors.</div>
+              </div>
+              <div class="compare-cell cell-good">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div><strong>Memory-safe binaries</strong>Single-binary Rust services that ingest data once and structurally prevent invalid entry — correct by construction.</div>
               </div>
             </div>
-            <div class="compare-cell cell-good">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <strong>Unified Core</strong>
-                A single, high-performance PostgreSQL database. No "glue"
-                needed—data lives and breathes in one secure location.
+
+            <div class="compare-row">
+              <div class="compare-cell cell-bad">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <div><strong>Unmanaged authority</strong>"Who changed this?" is a mystery. Permissions and security are afterthoughts bolted on late.</div>
+              </div>
+              <div class="compare-cell cell-good">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div><strong>Audit-by-default</strong>Immutable logs and strict RBAC engineered at the deepest layer. Every authority change is recorded.</div>
               </div>
             </div>
           </div>
 
-          <div class="compare-row">
-            <div class="compare-cell cell-bad">
-              <svg viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <div>
-                <strong>Hostage Data</strong>
-                Your most valuable business data is trapped on third-party
-                servers. Exporting or migrating is a nightmare.
-              </div>
-            </div>
-            <div class="compare-cell cell-good">
-              <svg viewBox="0 0 24 24">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <div>
-                <strong>Absolute Sovereignty</strong>
-                100% data ownership. The system runs securely on your
-                infrastructure, fully compliant with strict EU/Swedish
-                regulations.
-              </div>
-            </div>
+          <div class="cta" style="margin-top: 36px">
+            <a class="btn btn--primary btn--lg" href="/assessment">Start your operational assessment →</a>
+            <a class="btn btn--lg" href="/investment">Quantify the ROI</a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- ─────────────────────────── ROI CASE STUDY ─────────────────────────── -->
-    <section id="roi-case-study">
-      <div class="wrap">
-        <p class="eyebrow eyebrow--accent">Business Impact</p>
-        <h2>Real-World Control: The ROI of Systems Engineering</h2>
-        <p class="section-lead">
-          A projection of how we transform a standard, fragmented enterprise
-          into a unified powerhouse.
-        </p>
-
-        <div class="roi-container">
-          <div class="roi-story">
-            <h3>The Fragmented Reality (Before)</h3>
-            <ul class="roi-list">
-              <li>Customer data isolated in a cloud CRM.</li>
-              <li>
-                Invoices and operational claims scattered across Excel and PDF
-                files.
-              </li>
-              <li>
-                <strong>The Cost:</strong> 4 full-time employees dedicated
-                solely to copying data between systems. Management reports
-                delayed by 5 full days.
-              </li>
-            </ul>
-
-            <h3 style="margin-top: 32px">The SystemKraft Core (After)</h3>
-            <ul class="roi-list">
-              <li>
-                A centralized Rust & PostgreSQL engine swallowing all data
-                inputs automatically.
-              </li>
-              <li>A single, high-contrast dashboard for all departments.</li>
-              <li>
-                Structurally prevented invalid data entry (Correct by
-                construction).
-              </li>
-            </ul>
-          </div>
-
-          <div class="roi-results">
-            <h3>The Return on Investment</h3>
-            <div class="roi-metrics-grid">
-              <div class="roi-metric">
-                <strong>160 hrs</strong>
-                <span>Manual work eliminated / week</span>
-              </div>
-              <div class="roi-metric">
-                <strong>150k SEK</strong>
-                <span>Saved annually on SaaS bloat</span>
-              </div>
-              <div class="roi-metric">
-                <strong>0%</strong>
-                <span>Human data-entry errors</span>
-              </div>
-              <div class="roi-metric">
-                <strong>Instant</strong>
-                <span>Decision velocity (Real-time reports)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─────────────────────────── HOW I WORK ───────────────────────── -->
-    <section>
-      <div class="wrap">
-        <p class="eyebrow">Operating Doctrine</p>
-        <h2>Principles we deliver on</h2>
-        <div class="points">
-          <div class="point">
-            <span class="k">Truth</span><strong>Single Source of Truth</strong
-            ><span
-              >We centralize your operations so every department looks at the
-              exact same, real-time data.</span
-            >
-          </div>
-          <div class="point">
-            <span class="k">audit</span><strong>Audit-by-default</strong
-            ><span
-              >Every authority change is recorded. You can always answer "who
-              did what, and when?"</span
-            >
-          </div>
-          <div class="point">
-            <span class="k">simplicity</span
-            ><strong>Operational simplicity</strong
-            ><span
-              >One unified system. Less surface to manage, secure, and
-              operate.</span
-            >
-          </div>
-          <div class="point">
-            <span class="k">doctrine</span><strong>Doctrine before code</strong
-            ><span
-              >Security-sensitive behaviour is written down and reviewed
-              against, not improvised.</span
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─────────────────────────── LIVE OVERVIEW ────────────────────── -->
-    <section>
-      <div class="wrap">
-        <p class="eyebrow eyebrow--accent">
-          Live overview · this page runs on the stack we sell
-        </p>
-        <div class="status-grid">
-          <div class="status-card">
-            <span class="dot"></span>
-            <div>
-              <strong>PostgreSQL</strong
-              ><span>Connected · <code>{{DB_NAME}}</code> · v{{PG_MAJOR}}</span>
-            </div>
-          </div>
-          <div class="status-card">
-            <span class="dot"></span>
-            <div>
-              <strong>Operations</strong
-              ><span>{{SERVICES}} active · {{CASE_STUDIES}} case studies</span>
-            </div>
-          </div>
-          <div class="status-card">
-            <span class="dot"></span>
-            <div>
-              <strong>Partners</strong
-              ><span>{{CLIENTS}} companies · {{ENGAGEMENTS}} deployments</span>
-            </div>
-          </div>
-          <div class="status-card">
-            <span class="dot"></span>
-            <div>
-              <strong>Data Core</strong
-              ><span>{{MODELS}} models · securely managed</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ─────────────────────────── CONTACT ──────────────────────────── -->
-    <section id="contact">
-      <div class="wrap">
-        <p class="eyebrow">Get in touch</p>
-        <h2>Have operations worth securing?</h2>
-        <p class="lead lead--sm">
-          Tell us about the scattered data, fragile workflows, or legacy systems
-          slowing you down. We reply directly to every serious inquiry from
-          enterprise clients in Sweden.
-        </p>
-        <div class="cta">
-          <a
-            class="btn btn--primary btn--lg"
-            href="mailto:abdulwahed.sweden@gmail.com?subject=Operations%20Assessment"
-            >Start Assessment →</a
-          >
-          <a class="btn btn--lg" href="https://github.com/abdulwahed-sweden"
-            >Review our code</a
-          >
-        </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
     <footer class="wrap">
-      <span>SystemKraft · Sweden · Built for scale.</span>
-      <span>Edit this page in <code>templates/home.html</code>.</span>
+      <span>SystemKraft · Sweden · Enterprise Data Operations.</span>
+      <span>Built for scale · <a href="/dashboard-preview">live dashboard</a></span>
     </footer>
 
-    <script>
-      ;(function () {
-        var KEY = 'ms-theme'
-        var root = document.documentElement
-        var saved = localStorage.getItem(KEY)
-        if (saved === 'light' || saved === 'dark')
-          root.setAttribute('data-theme', saved)
-        function sync() {
-          var dark = root.getAttribute('data-theme') === 'dark'
-          document.getElementById('sun').style.display = dark ? 'none' : 'block'
-          document.getElementById('moon').style.display = dark
-            ? 'block'
-            : 'none'
-        }
-        sync()
-        document
-          .getElementById('themeBtn')
-          .addEventListener('click', function () {
-            var next =
-              root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-            root.setAttribute('data-theme', next)
-            localStorage.setItem(KEY, next)
-            sync()
-          })
-      })()
-    </script>
+    <script src="/assets/main.js" defer></script>
   </body>
 </html>

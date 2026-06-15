@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SystemKraft · Operational Assessment</title>
+    <meta
+      name="description"
+      content="A focused operational assessment for Swedish enterprises — three questions that reveal the true cost of fragmented systems, and a direct line to engineer your single source of truth."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#2B313D" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F3F6FD" media="(prefers-color-scheme: light)" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/main.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="/" aria-label="SystemKraft home">
+          <span class="mark" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="2.5"></circle>
+              <circle class="core" cx="16" cy="16" r="5.4"></circle>
+            </svg>
+          </span>
+          <span class="wordmark">SystemKraft</span>
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a class="nav-link" href="/">Overview</a>
+          <a class="nav-link" href="/investment">Investment</a>
+          <a class="nav-link" href="/assessment" aria-current="page">Assessment</a>
+          <a class="nav-link" href="/dashboard-preview">Dashboard</a>
+        </nav>
+        <div class="topbar-actions">
+          <span class="env-badge">Sweden</span>
+          <button id="themeBtn" class="iconbtn" aria-label="Toggle light or dark theme" type="button">
+            <svg id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+            <svg id="moon" viewBox="0 0 24 24" style="display: none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <header class="hero">
+        <div class="wrap">
+          <h1>An operational assessment, not a sales call.</h1>
+          <p class="lead">
+            Before any proposal, we diagnose. Three questions usually expose the true cost
+            of fragmented systems — and whether a single source of truth would change your
+            economics. Answer them honestly, then tell us where it hurts most.
+          </p>
+        </div>
+      </header>
+
+      <section style="padding-top: 0">
+        <div class="wrap">
+          <p class="eyebrow eyebrow--accent">The three-question diagnostic</p>
+          <div class="qtrap">
+            <article class="qcard">
+              <span class="qn">Q1 · Duplication</span>
+              <p>How often does your team enter the same data into multiple tools?</p>
+              <p class="qhint">Every duplicate keystroke is paid labour and a future reconciliation error.</p>
+            </article>
+            <article class="qcard">
+              <span class="qn">Q2 · Fragmentation</span>
+              <p>To produce a flawless real-time sales report, how many systems must someone check?</p>
+              <p class="qhint">If the answer is more than one, you do not yet have a single source of truth.</p>
+            </article>
+            <article class="qcard">
+              <span class="qn">Q3 · Subscription drag</span>
+              <p>Are you paying per-seat subscriptions for tools that only do half the job?</p>
+              <p class="qhint">Per-seat pricing taxes growth. Owned infrastructure does not.</p>
+            </article>
+          </div>
+
+          {{RESULT}}
+
+          <div class="assess-grid">
+            <aside class="assess-aside">
+              <h3>What happens next</h3>
+              <p>
+                We read every submission personally — no automated funnels, no junior
+                sales rep. If your operation is a fit, we propose a Phase 1 Diagnosis &amp;
+                Architecture engagement. If it isn't, we'll tell you plainly.
+              </p>
+              <ul>
+                <li>A direct reply from the engineer who would lead the work.</li>
+                <li>An initial read on where your operational drag is costing the most.</li>
+                <li>No obligation, and nothing shared with third parties.</li>
+              </ul>
+            </aside>
+
+            <form class="form" method="post" action="/assessment">
+              <input type="hidden" name="_csrf" value="{{CSRF}}" />
+              <div class="field">
+                <label for="company">Company</label>
+                <input id="company" name="company" type="text" required autocomplete="organization" placeholder="e.g. Nordkraft Systems AB" />
+              </div>
+              <div class="field">
+                <label for="name">Your name &amp; role</label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="e.g. Erik Lindqvist, CFO" />
+              </div>
+              <div class="field">
+                <label for="email">Work email</label>
+                <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.se" />
+              </div>
+              <div class="field">
+                <label for="service_interest">Biggest operational drag</label>
+                <select id="service_interest" name="service_interest">
+                  <option value="Data silos / no single source of truth">Data silos / no single source of truth</option>
+                  <option value="Manual data entry between tools">Manual data entry between tools</option>
+                  <option value="SaaS sprawl / per-seat costs">SaaS sprawl / per-seat costs</option>
+                  <option value="No real-time reporting">No real-time reporting</option>
+                  <option value="Access &amp; audit / who-did-what">Access &amp; audit / who-did-what</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="message">What does a typical reporting day look like?</label>
+                <textarea id="message" name="message" placeholder="Tell us which tools, how many people, and where the time goes."></textarea>
+              </div>
+              <button class="btn btn--primary btn--lg" type="submit">Request assessment →</button>
+              <p class="form-note">We reply personally. Your details are never shared or sold.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <span>SystemKraft · Sweden · Enterprise Data Operations.</span>
+      <span>Built for scale · <a href="/investment">the business case</a></span>
+    </footer>
+
+    <script src="/assets/main.js" defer></script>
+  </body>
+</html>

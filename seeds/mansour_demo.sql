@@ -1,99 +1,123 @@
--- Demo data for the `mansour` services admin.
+-- ============================================================
+-- SystemKraft — demo / reference dataset
+-- Aligned with the public site: four disciplines, the engagement
+-- model, real Swedish clients, on-brand engagements and case studies.
 -- Apply after migrations:
 --   psql "$DATABASE_URL" -f seeds/mansour_demo.sql
--- Idempotent-ish: clears the project tables first, then reseeds. It does
--- NOT touch the framework's auth/audit tables.
+-- Clears the project tables first, then reseeds. Does NOT touch the
+-- framework's auth/audit tables.
+-- ============================================================
 
 BEGIN;
 
 TRUNCATE engagements, case_studies, services, service_categories, clients, inquiries
     RESTART IDENTITY CASCADE;
 
--- ── Categories ────────────────────────────────────────────────
+-- ── Disciplines (the four service categories on the site) ─────
 INSERT INTO service_categories (name, slug) VALUES
-    ('Rust Admin & Internal Platforms', 'rust-admin-platforms'),
-    ('Security Audits',                 'security-audits'),
-    ('Systems & Robotics Engineering',  'systems-robotics'),
-    ('Secure Web Applications',         'secure-web-apps');
+    ('Enterprise Data Operations',     'enterprise-data-operations'),
+    ('Business Systems Engineering',   'business-systems-engineering'),
+    ('Unified Control Panels',         'unified-control-panels'),
+    ('Audit & Authority Architecture', 'audit-authority-architecture');
 
--- ── Services ──────────────────────────────────────────────────
+-- ── Services (the offerings, mapped to disciplines) ───────────
 INSERT INTO services (category_id, name, slug, summary, problem_solved, tech_focus, engagement_model, active)
-SELECT c.id, v.name, v.slug, v.summary, v.problem_solved, v.tech_focus, v.engagement_model, TRUE
+SELECT c.id, v.name, v.slug, v.summary, v.problem_solved, v.tech_focus, v.engagement_model, v.active
 FROM (VALUES
-    ('rust-admin-platforms',
-     'Rust Admin Platform Build', 'rust-admin-build',
-     'A production back-office in Rust with auth, sessions, recovery and a full audit trail designed as one system.',
-     'Slow, hard-to-audit internal tools and a sprawl of disconnected admin apps no one trusts.',
-     'rustio-admin, Postgres, single-binary deployment', 'fixed'),
-    ('rust-admin-platforms',
-     'Internal Tooling Retainer', 'internal-tooling-retainer',
-     'Ongoing development and operation of internal Rust tooling as the business grows.',
-     'Internal tools that rot because no one owns them after launch.',
-     'rustio-admin, RustIO, CI', 'retainer'),
-    ('security-audits',
-     'Smart-Contract Security Audit', 'smart-contract-audit',
-     'Independent, doctrine-driven review of smart contracts and on-chain protocols with a written, actionable report.',
-     'Capital and reputation at risk from vulnerabilities that surface only after launch.',
-     'Solidity, DeFi protocols, threat modelling', 'fixed'),
-    ('systems-robotics',
-     'Robotics Control Software', 'robotics-control',
-     'Reliable control software with one trait surface shared between simulation and hardware.',
-     'Two divergent codebases for sim and hardware that drift apart and fail in the field.',
-     'Rust, nalgebra, kinematics, motion planning', 'hourly'),
-    ('secure-web-apps',
-     'Secure Web Application', 'secure-web-app',
-     'Web applications where login, recovery, sessions and audit logging are first-class from day one.',
-     'Security features bolted on late, leaving the gaps that always creates.',
-     'Rust, Django, audit-by-default', 'fixed')
-) AS v(cat_slug, name, slug, summary, problem_solved, tech_focus, engagement_model)
+    ('enterprise-data-operations',
+     'Data Consolidation & Single Source of Truth', 'data-consolidation',
+     'We unify disparate data sources into one high-performance PostgreSQL core, so every department reads and writes the same numbers.',
+     'Data silos and the absence of a single source of truth across departments.',
+     'PostgreSQL, schema design, ETL pipelines', 'fixed', TRUE),
+    ('enterprise-data-operations',
+     'Legacy Migration & Decommissioning', 'legacy-migration',
+     'We extract data trapped in legacy ERPs, CSVs and spreadsheets and migrate it into the operational core — then retire the old tools.',
+     'Critical business data held hostage in third-party tools and brittle exports.',
+     'Migration pipelines, data validation', 'fixed', TRUE),
+    ('business-systems-engineering',
+     'Core Engine Build — Rust & PostgreSQL', 'core-engine-build',
+     'We engineer the central, memory-safe back end and data core that the whole operation runs on, deployed as a single binary.',
+     'Fragile manual workflows and disconnected SaaS stitched together with webhooks.',
+     'Rust, PostgreSQL, single-binary deployment', 'fixed', TRUE),
+    ('unified-control-panels',
+     'Operational Control Panel', 'operational-control-panel',
+     'A minimalist, keyboard-first admin panel giving decision-makers instant, unified visibility into the entire operation.',
+     'Cluttered, slow interfaces that delay critical business decisions.',
+     'Keyboard-first UI, low-latency rendering', 'fixed', TRUE),
+    ('audit-authority-architecture',
+     'RBAC & Audit Architecture', 'rbac-audit-architecture',
+     'Strict role-based access control and immutable audit trails engineered into the foundation — not bolted on afterward.',
+     'Unmanaged authority and the inability to answer "who did what, and when?"',
+     'RBAC, immutable audit logs, correlation ids', 'fixed', TRUE),
+    ('business-systems-engineering',
+     'Operational Assurance & SLA', 'operational-assurance',
+     'We keep the engine running flawlessly around the clock: hosting, backups, patches and a guaranteed uptime SLA.',
+     'A delivered system with no one accountable for keeping it running.',
+     'GDPR-compliant hosting, backups, monitoring', 'retainer', TRUE)
+) AS v(cat_slug, name, slug, summary, problem_solved, tech_focus, engagement_model, active)
 JOIN service_categories c ON c.slug = v.cat_slug;
 
--- ── Clients (Swedish companies — illustrative) ────────────────
+-- ── Clients (Swedish enterprises — illustrative) ──────────────
 INSERT INTO clients (company_name, org_number, contact_name, email, city, industry, status) VALUES
-    ('Nordkraft Systems AB', '556000-1111', 'Erik Lindqvist', 'erik@nordkraft.example', 'Stockholm', 'Energy',       'active'),
-    ('Lagom Fintech AB',     '556000-2222', 'Sara Bergström', 'sara@lagomfintech.example', 'Göteborg',  'Fintech',      'lead'),
-    ('Västkust Robotics AB', '556000-3333', 'Johan Persson',  'johan@vastkustrobotics.example', 'Malmö', 'Manufacturing', 'active'),
-    ('Solvind Energi AB',    '556000-4444', 'Anna Holm',      'anna@solvind.example', 'Uppsala',   'Energy',       'past');
+    ('Nordkraft Systems AB',   '556421-1180', 'Erik Lindqvist',  'erik.lindqvist@nordkraft.example',   'Stockholm', 'Energy',         'active'),
+    ('Västkust Robotics AB',   '556733-2204', 'Johan Persson',   'johan.persson@vastkustrobotics.example', 'Malmö',   'Manufacturing',  'active'),
+    ('Bergslagen Logistik AB', '556902-7741', 'Anna Holm',       'anna.holm@bergslagen.example',       'Örebro',    'Logistics',      'active'),
+    ('Lagom Fintech AB',       '559014-3382', 'Sara Bergström',  'sara.bergstrom@lagomfintech.example', 'Göteborg', 'Fintech',        'lead'),
+    ('Kiruna Mining Tech AB',  '556188-9925', 'Lars Eklund',     'lars.eklund@kirunatech.example',     'Kiruna',    'Mining',         'lead'),
+    ('Solvind Energi AB',      '556650-5512', 'Ingrid Falk',     'ingrid.falk@solvind.example',        'Uppsala',   'Energy',         'past');
 
--- ── Engagements ───────────────────────────────────────────────
+-- ── Engagements (delivered work, mapped client × service) ─────
 INSERT INTO engagements (client_id, service_id, title, status, started)
 SELECT cl.id, s.id, v.title, v.status, now() - (v.age_days || ' days')::interval
 FROM (VALUES
-    ('Nordkraft Systems AB', 'rust-admin-build',  'Operations admin platform',        'in_progress', 40),
-    ('Västkust Robotics AB', 'robotics-control',  'Pick-and-place control rewrite',    'delivered',   120),
-    ('Lagom Fintech AB',     'smart-contract-audit', 'Pre-launch protocol audit',      'proposed',    5),
-    ('Solvind Energi AB',    'secure-web-app',    'Customer portal with audit log',    'delivered',   300)
+    ('Nordkraft Systems AB',   'core-engine-build',         'Operations data core',                'in_progress', 38),
+    ('Nordkraft Systems AB',   'rbac-audit-architecture',   'RBAC & audit rollout',                'in_progress', 21),
+    ('Västkust Robotics AB',   'operational-control-panel', 'Production dispatch control panel',    'in_progress', 16),
+    ('Västkust Robotics AB',   'legacy-migration',          'Legacy ERP migration',                'delivered',   150),
+    ('Bergslagen Logistik AB', 'core-engine-build',         'Dispatch system replacement',          'in_progress', 9),
+    ('Bergslagen Logistik AB', 'operational-assurance',     'Operational assurance retainer',       'delivered',   95),
+    ('Lagom Fintech AB',       'data-consolidation',        'Single source of truth diagnosis',     'proposed',    4),
+    ('Kiruna Mining Tech AB',  'data-consolidation',        'Reporting unification assessment',     'proposed',    2),
+    ('Solvind Energi AB',      'core-engine-build',         'Customer portal data core',            'delivered',   320),
+    ('Solvind Energi AB',      'rbac-audit-architecture',   'Audit trail implementation',           'delivered',   300)
 ) AS v(company, svc_slug, title, status, age_days)
 JOIN clients  cl ON cl.company_name = v.company
 JOIN services s  ON s.slug = v.svc_slug;
 
--- ── Case studies ──────────────────────────────────────────────
+-- ── Case studies (proof — problem / solution / outcome) ───────
 INSERT INTO case_studies (service_id, title, problem, solution, outcome, published)
 SELECT s.id, v.title, v.problem, v.solution, v.outcome, TRUE
 FROM (VALUES
-    ('rust-admin-build',
-     'A back-office that auditors trust',
-     'An energy operator ran critical operations through spreadsheets and three disconnected internal apps with no record of who changed what.',
-     'Built a single Rust admin platform on rustio-admin: typed models, role-based access, and an audit trail with correlation ids across every action.',
-     'One reviewable system; every authority change recorded; deployed as a single binary with no frontend build step.'),
-    ('smart-contract-audit',
-     'Catching the bug before mainnet',
-     'A DeFi protocol needed independent assurance before putting user funds at risk on launch.',
-     'Threat-modelled the protocol and reviewed it line by line against a written security doctrine, with each finding ranked by impact.',
-     'Issues surfaced and fixed pre-launch; a clear report the team could act on and share with their community.'),
-    ('robotics-control',
-     'One codebase for sim and hardware',
-     'A robotics team maintained separate code for simulation and the physical arm, and the two kept drifting apart.',
-     'Designed one Rust trait surface shared by the simulator and the hardware backend, with pure kinematics and an explicit motion planner.',
-     'Behaviour validated in simulation now matches hardware; new backends plug in without touching the planner.')
+    ('data-consolidation',
+     'From four tools to one source of truth',
+     'An energy operator ran critical operations across spreadsheets and three disconnected internal apps, with no department ever looking at the same numbers.',
+     'We consolidated every source into one PostgreSQL core, defined the single source of truth, and gave each team a unified view of the same live data.',
+     'Roughly 160 hours of manual reconciliation eliminated per week; management reporting moved from a five-day lag to real time.'),
+    ('core-engine-build',
+     'Replacing a fragile dispatch with a single binary',
+     'A manufacturer''s dispatch ran on a web of SaaS tools glued together with webhooks; when one link broke, the line stopped.',
+     'We engineered a single-binary Rust engine on one PostgreSQL core, ingesting every input once and structurally preventing invalid data entry.',
+     'Human data-entry errors fell to zero; infrastructure cost stayed flat as headcount grew, with no per-seat tax.'),
+    ('rbac-audit-architecture',
+     'Audit-by-default for a regulated operation',
+     'A logistics operator could not answer "who changed this, and when?" — permissions and security had been bolted on late.',
+     'We engineered strict role-based access control and an immutable audit trail into the foundation, with a correlation id on every action.',
+     'The operation became compliance-ready, with complete traceability of every authority change across the system.'),
+    ('operational-control-panel',
+     'A control panel decision-makers actually use',
+     'Leadership waited on analysts to assemble reports from cluttered, slow dashboards, delaying every operational decision.',
+     'We shipped a minimalist, keyboard-first control panel reading directly from the operational core, built for heavy daily use.',
+     'Decision velocity went from days to instant; the leadership team self-serves live figures without touching a spreadsheet.')
 ) AS v(svc_slug, title, problem, solution, outcome)
 JOIN services s ON s.slug = v.svc_slug;
 
--- ── Inquiries (inbound) ───────────────────────────────────────
+-- ── Inquiries (inbound assessment requests) ───────────────────
 INSERT INTO inquiries (company, email, service_interest, message) VALUES
-    ('Bergslagen Logistik AB', 'cto@bergslagen.example', 'Rust admin platform',
-     'We want to replace our internal dispatch tool. Can we talk about a Rust admin build?'),
-    ('Kiruna Mining Tech AB',  'ops@kirunatech.example', 'Robotics control',
-     'Interested in control software for an automated handling arm.');
+    ('Mälardalen Industri AB', 'cfo@malardalen.example', 'Data silos / no single source of truth',
+     'We run production, sales and finance on three systems that never agree. We need one source of truth before our next board report.'),
+    ('Skåne Transport Group',  'coo@skanetransport.example', 'Manual data entry between tools',
+     'Our dispatchers re-key every order into four tools. Can SystemKraft replace that with one engine?'),
+    ('Norrland Verkstad AB',   'it@norrlandverkstad.example', 'SaaS sprawl / per-seat costs',
+     'Per-seat subscriptions are scaling faster than our headcount. We want to own the infrastructure instead of renting it.');
 
 COMMIT;
